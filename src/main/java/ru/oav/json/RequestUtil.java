@@ -15,7 +15,7 @@ import java.net.URISyntaxException;
 /**
  * Created by antonorlov on 16/06/2017.
  */
-public class RequestUtil {
+class RequestUtil {
 
     public static final String VACANCIES_PATH = "vacancies";
     public static final String PAGE_PARAM = "page";
@@ -37,18 +37,25 @@ public class RequestUtil {
         return null;
     }
 
-    public static String getVacansies() {
-        return getVacansies(0);
+    public static String getVacansies(final String query) {
+        return getVacansies(0, query);
     }
 
-    public static String getVacansies(int page) {
+    /**
+     * Получиь json с вакансиями
+     *
+     * @param page  страница
+     * @param query поисковой запрос
+     * @return
+     */
+    public static String getVacansies(int page, final String query) {
 
         try {
             URI uri = new URIBuilder()
                     .setScheme("https")
                     .setHost("api.hh.ru")
                     .setPath(VACANCIES_PATH)
-                    .setParameter(TEXT_PARAM, "java")
+                    .setParameter(TEXT_PARAM, query)
                     .setParameter(PAGE_PARAM, page + "")
                     .build();
             HttpGet getRequest = new HttpGet(uri);

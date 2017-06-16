@@ -1,0 +1,146 @@
+{
+  "alternate_url": "https://hh.ru/vacancy/21017972",
+  "code": null,
+  "premium": false,
+  "description": "<p>Крупная американская продуктовая компания Petrosoft LLC ищет <strong>в свою команду Java-</strong><strong>developer!</strong></p> <p><strong>Работа в нашем Одесском офисе ,полная занятость.</strong></p> <p> </p> <p><strong>О нас:</strong></p> <p>Petrosoft LLC. – ведущая американская компания в области разработки back office систем управления заправочными станциями и топливной дистрибуцией</p> <p> </p> <p><strong>О проекте:</strong></p> <p>На данный момент осуществляются задачи по поддержке текущего функционала и разработке новых крупных модулей.</p> <p>проект http://www.petrosoftinc.com/smartpos/</p> <p> </p> <p><strong>Задачи, которые Вам предстоит решать:</strong></p> <p>Работа в команде по разработке проекта http://www.petrosoftinc.com/smartpos/</p> <p><strong>Наши требования:</strong></p> <p>- Уверенные знания Java EE<br />- Уверенные знания MySQL<br />- Опыт работы с Spring Framework<br />- Опыт работы с GIT<br />- Знание и опыт работы с UML<br />- Design Patterns<br />- Linux<br />- Maven</p> <p><strong>Будет плюсом опыт работы с:</strong><br />- My Batis<br />- JavaFX<br />- jira</p> <p> </p> <p><strong>Обязанности:</strong><br />- Проектирование решений<br />- Участие в написании технической спецификации решения<br />- Пересмотр существующих решений в сторону повышения качества/гибкости/производительности/соответствия стандартам</p> <p> </p> <p><strong>Мы предлагаем:</strong></p> <p>- Работу в дружной команде, в комфортном офисе</p> <p>- Опыт работы в международной компании из ТОP 3 рынка</p> <p>- Конкурентную заработную плату в $</p> <p>- 8-ми часовой рабочий день, 5 дней в неделю.</p> <p> </p> <p><strong>Мы всегда рады талантливым , инициативным людям, которые желают работать в нашей компании. Если вы заинтересованы в работе с технологическим лидером, и хотите наслаждаться динамичным ростом корпоративной культуры, а также работой с яркими и талантливыми коллегами, то коллектив Petrosoft может стать для вас вторым домом .</strong></p> <p> </p>",
+  "schedule": {
+    "id": "fullDay",
+    "name": "Полный день"
+  },
+  "suitable_resumes_url": null,
+  "site": {
+    "id": "hh",
+    "name": "hh.ru"
+  },
+  "billing_type": {
+    "id": "standard_plus",
+    "name": "Стандарт+"
+  },
+  "published_at": "2017-06-15T23:12:21+0300",
+  "test": null,
+  "accept_handicapped": false,
+  "experience": {
+    "id": "between3And6",
+    "name": "От 3 до 6 лет"
+  },
+  "address": {
+    "building": null,
+    "city": "Одесса",
+    "description": null,
+    "metro": null,
+    "metro_stations": [],
+    "raw": null,
+    "street": null,
+    "lat": 46.484579,
+    "lng": 30.732597
+  },
+  "key_skills": [
+    {
+      "name": "MySQL"
+    },
+    {
+      "name": "Java"
+    },
+    {
+      "name": "Linux"
+    },
+    {
+      "name": "Java SE"
+    },
+    {
+      "name": "JavaFX"
+    },
+    {
+      "name": "Design Patterns"
+    },
+    {
+      "name": "Atlassian Jira"
+    },
+    {
+      "name": "Git"
+    },
+    {
+      "name": "UML"
+    },
+    {
+      "name": "Spring Framework"
+    },
+    {
+      "name": "Apache Maven"
+    }
+  ],
+  "allow_messages": true,
+  "employment": {
+    "id": "full",
+    "name": "Полная занятость"
+  },
+  "id": "21017972",
+  "response_url": null,
+  "salary": null,
+  "archived": false,
+  "name": "Java developer",
+  "contacts": null,
+  "created_at": "2017-06-15T23:12:21+0300",
+  "area": {
+    "url": "https://api.hh.ru/areas/127?host=hh.ru",
+    "id": "127",
+    "name": "Одесса"
+  },
+  "relations": [],
+  "employer": {
+    "logo_urls": {
+      "90": "https://hhcdn.ru/employer-logo/981554.png",
+      "original": "https://hhcdn.ru/employer-logo-original/99784.png",
+      "240": "https://hhcdn.ru/employer-logo/981555.png"
+    },
+    "vacancies_url": "https://api.hh.ru/vacancies?employer_id=986766&host=hh.ru",
+    "name": "Petrosoft Inc.",
+    "url": "https://api.hh.ru/employers/986766?host=hh.ru",
+    "alternate_url": "https://hh.ru/employer/986766",
+    "id": "986766",
+    "trusted": true
+  },
+  "response_letter_required": false,
+  "apply_alternate_url": "https://hh.ru/applicant/vacancy_response?vacancyId=21017972",
+  "quick_responses_allowed": true,
+  "negotiations_url": null,
+  "department": null,
+  "branded_description": null,
+  "hidden": false,
+  "type": {
+    "id": "open",
+    "name": "Открытая"
+  },
+  "specializations": [
+    {
+      "profarea_id": "1",
+      "profarea_name": "Информационные технологии, интернет, телеком",
+      "id": "1.395",
+      "name": "Банковское ПО"
+    },
+    {
+      "profarea_id": "1",
+      "profarea_name": "Информационные технологии, интернет, телеком",
+      "id": "1.221",
+      "name": "Программирование, Разработка"
+    },
+    {
+      "profarea_id": "1",
+      "profarea_name": "Информационные технологии, интернет, телеком",
+      "id": "1.270",
+      "name": "Сетевые технологии"
+    },
+    {
+      "profarea_id": "1",
+      "profarea_name": "Информационные технологии, интернет, телеком",
+      "id": "1.272",
+      "name": "Системная интеграция"
+    },
+    {
+      "profarea_id": "1",
+      "profarea_name": "Информационные технологии, интернет, телеком",
+      "id": "1.327",
+      "name": "Управление проектами"
+    }
+  ]
+}

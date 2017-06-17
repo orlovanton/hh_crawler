@@ -33,4 +33,14 @@ public class HhSalary {
     public void setCurrency(String currency) {
         this.currency = currency;
     }
+
+
+    @Override
+    public String toString() {
+        return "HhSalary{" +
+                "to=" + to +
+                ", from=" + from +
+                ", currency='" + currency + '\'' +
+                '}';
+    }
 }

@@ -19,7 +19,10 @@ public class VacancyController {
     @RequestMapping("/")
     public String index(Model model) {
 
+        //todo: читать из файла
         final List<HhVacancy> list = VacancyService.getVacancies(40, "java");
+
+
 
         final List<VacancyDto> dtoList = new ArrayList<>();
 

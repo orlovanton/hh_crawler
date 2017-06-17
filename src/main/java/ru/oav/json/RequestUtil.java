@@ -17,9 +17,9 @@ import java.net.URISyntaxException;
  */
 class RequestUtil {
 
-    public static final String VACANCIES_PATH = "vacancies";
-    public static final String PAGE_PARAM = "page";
-    public static final String TEXT_PARAM = "text";
+    private static final String VACANCIES_PATH = "vacancies";
+    private static final String PAGE_PARAM = "page";
+    private static final String TEXT_PARAM = "text";
 
     public static String getVacancy(final String id) {
         try {
@@ -95,7 +95,7 @@ class RequestUtil {
             while ((output = br.readLine()) != null) {
                 result += output;
             }
-
+//          System.out.println(result);
             httpClient.close();
             return result;
         } catch (IOException ex) {

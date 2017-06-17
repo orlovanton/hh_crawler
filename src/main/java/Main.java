@@ -1,4 +1,7 @@
 import ru.oav.entity.HhVacancy;
+import ru.oav.formatvacancy.Vacancy;
+import ru.oav.formatvacancy.VacancyReader;
+import ru.oav.formatvacancy.VacancyWriter;
 import ru.oav.json.VacancyService;
 
 import java.util.List;
@@ -12,11 +15,13 @@ public class Main {
     //https://github.com/hhru/api
     public static void main(String[] args) {
 
-        List<HhVacancy> java = VacancyService.getVacancies(100, "java");
-        int i = 0;
-        for (HhVacancy hhVacancy : java) {
-            System.out.println(i + " - " + hhVacancy.getName() + " " + hhVacancy.getSalary());
-            i++;
+        VacancyService.updateVacancies();
+
+        VacancyReader r = new VacancyReader();
+        List<Vacancy> allVacancies = r.getAllVacancies();
+
+        for (Vacancy allVacancy : allVacancies) {
+            System.out.println(allVacancy);
         }
     }
 }

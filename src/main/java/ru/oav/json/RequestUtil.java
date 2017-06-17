@@ -95,7 +95,7 @@ class RequestUtil {
             while ((output = br.readLine()) != null) {
                 result += output;
             }
-//          System.out.println(result);
+            System.out.println(result);
             httpClient.close();
             return result;
         } catch (IOException ex) {

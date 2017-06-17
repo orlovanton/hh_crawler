@@ -12,15 +12,6 @@ import java.util.List;
 class VacancyUtil {
 
     /**
-     * Поучить список вакансий  - первую страницу - макс 20 шт
-     *
-     * @return
-     */
-    public static List<HhVacancy> getVacancies(final String query) {
-        return getVacancies(0, query);
-    }
-
-    /**
      * Поучить список вакансий с конкретной страницы
      *
      * @param page номер страницы с 0

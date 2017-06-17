@@ -5,6 +5,7 @@ import ru.oav.entity.HhVacancy;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,8 +14,6 @@ import java.util.List;
  * Created by PC on 16.06.2017.
  */
 public class VacancyWriter implements VacancyWriterInt {
-
-    private static final String PATH = "C:\\Users\\PC\\Desktop\\vacanciesOut.txt";
 
     /**
      * Конвертирует класс HhVacancy в класс Vacancy
@@ -40,8 +39,8 @@ public class VacancyWriter implements VacancyWriterInt {
         } else {
             shortVacancy.setVacancySalary("опыт ваканскии не указан");
         }
-
         shortVacancy.setVacancyName(v.getName());
+        shortVacancy.setId(String.valueOf(v.getId()));
 
         return shortVacancy;
     }
@@ -52,8 +51,17 @@ public class VacancyWriter implements VacancyWriterInt {
      * @param list список вакансий, полученных из VacancyUtil (метод getVacancy)
      */
 
-    public void write(List<HhVacancy> list) {
-        File vacancies = new File(PATH);
+    public void writeHhVacancy(List<HhVacancy> list) {
+        List<Vacancy> result = new ArrayList<>();
+        for (HhVacancy hhVacancy : list) {
+            result.add(convert(hhVacancy));
+        }
+
+        write(result);
+    }
+
+    public void write(List<Vacancy> list) {
+        File vacancies = new File(Constanses.PATHFILE);
         PrintWriter out = null;
 
         try {
@@ -62,26 +70,21 @@ public class VacancyWriter implements VacancyWriterInt {
             }
 
             out = new PrintWriter(vacancies.getAbsoluteFile());
-            String separator = System.lineSeparator();
-            for (HhVacancy v : list) {
-                Vacancy convert = convert(v);
+            String separator = "@@@";
+            for (Vacancy convert : list) {
                 StringBuilder sb = new StringBuilder("");
-                sb.append("Название вакансии: ");
+                sb.append(convert.getId());
+                sb.append(separator);
                 sb.append(convert.getVacancyName());
                 sb.append(separator);
-                sb.append("Город ваканскии: ");
                 sb.append(convert.getVacancyArea());
                 sb.append(separator);
-                sb.append("Опыт вакансии: ");
                 sb.append(convert.getVacancyExperience());
                 sb.append(separator);
-                sb.append("З/п вакансии: ");
                 sb.append(convert.getVacancySalary());
-                sb.append(separator);
-                sb.append(separator);
+                sb.append(System.lineSeparator());
                 out.print(sb);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

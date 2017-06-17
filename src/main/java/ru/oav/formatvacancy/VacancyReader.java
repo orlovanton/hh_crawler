@@ -1,16 +1,47 @@
 package ru.oav.formatvacancy;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
- *
- * Created by antonorlov on 17/06/2017.
+ * Created by PC on 17.06.2017.
  */
-public interface VacancyReader {
+public class VacancyReader implements VacancyReaderInt {
+
 
     /**
-     * Получить список всех вакансий из файла
-     * @return
+     * чтение списка ваканский из файла (путь PATHFILE)
+     *
+     * @return список ваканский, загруженных из файла
      */
-    List<Vacancy> getAllVacancies();
+    public List<Vacancy> getAllVacancies() {
+        List<Vacancy> listOfVacancies = new ArrayList<>();
+
+        try {
+            FileInputStream fstream = new FileInputStream(Constanses.PATHFILE);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                //todo переписать это говно
+                if (line == null || line.trim().length() < 3) {
+                    return Collections.emptyList();
+                }
+                Vacancy vacancy = new Vacancy();
+
+                String[] fields = line.split("@@@");
+                vacancy.setId(fields[0]);
+                vacancy.setVacancyName(fields[1]);
+                vacancy.setVacancyArea(fields[2]);
+                vacancy.setVacancyExperience(fields[3]);
+                vacancy.setVacancySalary(fields[4]);
+                listOfVacancies.add(vacancy);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return listOfVacancies;
+    }
 }

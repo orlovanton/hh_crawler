@@ -20,7 +20,8 @@ public class VacancyController {
     public String index(Model model) {
 
         //todo: читать из файла
-        final List<HhVacancy> list = VacancyService.getVacancies(40, "java");
+//        VacancyService.getVacancies(40, "java");
+        final List<HhVacancy> list = null;
 
 
 
@@ -29,6 +30,7 @@ public class VacancyController {
         for (HhVacancy hhVacancy : list) {
             dtoList.add(new VacancyDto(hhVacancy));
         }
+
         model.addAttribute("list", dtoList);
 
         return "index";

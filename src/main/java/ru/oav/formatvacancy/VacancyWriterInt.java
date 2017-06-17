@@ -8,7 +8,10 @@ import java.util.List;
  * Created by PC on 17.06.2017.
  */
 public interface VacancyWriterInt {
-    void write(List<HhVacancy> list);
+
+    void writeHhVacancy(List<HhVacancy> list);
+
+    void write(List<Vacancy> list);
 
     Vacancy convert(HhVacancy v);
 }

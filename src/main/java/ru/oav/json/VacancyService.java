@@ -30,7 +30,7 @@ public class VacancyService {
         }
 
         //получить вакансии из API
-        List<HhVacancy> java = VacancyService.getVacanciesFromApi(100, "java");
+        List<HhVacancy> java = VacancyService.getVacancies(100, "java");
         VacancyWriter wr = new VacancyWriter();
 
         //обогатить мапку новыми вакансиями
@@ -55,22 +55,33 @@ public class VacancyService {
      * @param query  поисковое слово, например java
      * @return список вакансий
      */
-    private static List<HhVacancy> getVacanciesFromApi(int number, String query) {
-        int totalPages = VacancyUtil.getTotalPages(query);
+    public static List<HhVacancy> getVacancies(int number, String query) {
+        int totalPages = getTotalPages(query);
         int counter = 0;
-        final List<HhVacancy> result = new ArrayList<HhVacancy>(number);
+        final List<HhVacancy> result = new ArrayList<>(number);
 
         for (int i = 0; i < totalPages; i++) {
             if (counter >= number) {
                 //тут явно косяк т.к. кол-во значений будет неравно number - пока так оставим
                 return result;
             }
-            List<HhVacancy> vacancies = VacancyUtil.getVacancies(0, query);
+            String vacanciesJson = RequestUtil.getVacansies(0, query);
+            List<HhVacancy> vacancies = VacancyUtil.convertToVacancies(vacanciesJson);
             result.addAll(vacancies);
             counter += vacancies.size();
         }
 
         return result;
 
+    }
+    /**
+     * Получить кол-во страниц по поисковому запросу
+     *
+     * @param query поисковой запрос
+     * @return
+     */
+    private static int getTotalPages(final String query) {
+        final String json = RequestUtil.getVacansies(query);
+        return VacancyUtil.getTotalPages(json);
     }
 }

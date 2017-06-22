@@ -19,7 +19,15 @@ class RequestUtil {
 
     private static final String VACANCIES_PATH = "vacancies";
     private static final String PAGE_PARAM = "page";
+    //текстовое поле
     private static final String TEXT_PARAM = "text";
+    //регион. Справочник с возможными значениями: /areas
+    private static final String AREA_PARAM = "area";
+    //опыт работы.
+    private static final String EXPERIENCE_PARAM = "experience";
+
+    //это код СПб в API HH
+    private static final String SPB_CODE = "2";
 
     public static String getVacancy(final String id) {
         try {
@@ -57,6 +65,7 @@ class RequestUtil {
                     .setPath(VACANCIES_PATH)
                     .setParameter(TEXT_PARAM, query)
                     .setParameter(PAGE_PARAM, page + "")
+                    .setParameter(AREA_PARAM, SPB_CODE)
                     .build();
             HttpGet getRequest = new HttpGet(uri);
 
@@ -79,7 +88,7 @@ class RequestUtil {
 
             getRequest.addHeader("accept", "application/json");
 
-            HttpResponse response = httpClient.execute(getRequest);
+            HttpResponse response = getResponse(httpClient, getRequest);
 
             if (response.getStatusLine().getStatusCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : "
@@ -102,5 +111,12 @@ class RequestUtil {
             ex.printStackTrace();
         }
         return null;
+    }
+
+
+    protected static HttpResponse getResponse(CloseableHttpClient httpClient,
+                                              HttpGet getRequest) throws IOException {
+        return httpClient.execute(getRequest);
+
     }
 }

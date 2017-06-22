@@ -14,27 +14,29 @@ class VacancyUtil {
     /**
      * Поучить список вакансий с конкретной страницы
      *
-     * @param page номер страницы с 0
      * @return
      */
-    public static List<HhVacancy> getVacancies(int page, final String query) {
-        String vacansies = RequestUtil.getVacansies(page, query);
-
+    public static List<HhVacancy> convertToVacancies(String json) {
         Gson gson = new Gson();
-        HhResponse hhResponse = gson.fromJson(vacansies, HhResponse.class);
-
+        HhResponse hhResponse = gson.fromJson(json, HhResponse.class);
         return hhResponse.getItems();
     }
 
-    public static int getTotalPages(final String query) {
-        String vacansies = RequestUtil.getVacansies(query);
+    public static int getTotalPages(final String json) {
+
 
         Gson gson = new Gson();
-        HhResponse hhResponse = gson.fromJson(vacansies, HhResponse.class);
+        HhResponse hhResponse = gson.fromJson(json, HhResponse.class);
 
         return hhResponse.getPages();
     }
 
+    /**
+     * Получить вакансию по ее идентификатору
+     *
+     * @param id
+     * @return
+     */
     public static HhVacancy getVacancy(final String id) {
         Gson gson = new Gson();
 

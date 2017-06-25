@@ -25,9 +25,9 @@ public class VacancyReader implements VacancyReaderInt {
             String line;
 
             while ((line = br.readLine()) != null) {
-                //todo переписать это говно
-                if (line == null || line.trim().length() < 3) {
-                    return Collections.emptyList();
+
+                if (line.trim().length() == 0) {
+                    continue;
                 }
                 Vacancy vacancy = new Vacancy();
 

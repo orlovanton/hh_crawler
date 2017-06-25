@@ -35,9 +35,16 @@ public class VacancyWriter implements VacancyWriterInt {
             shortVacancy.setVacancyExperience("опыт вакансии не указан");
         }
         if (v.getSalary() != null) {
-            shortVacancy.setVacancySalary(v.getSalary().getFrom() + "-" + v.getSalary().getTo());
+            String salary = "";
+            if (v.getSalary().getFrom() != 0) {
+                salary += "от " + v.getSalary().getFrom() + " ";
+            }
+            if (v.getSalary().getTo() != 0) {
+                salary += "до " + v.getSalary().getTo();
+            }
+            shortVacancy.setVacancySalary(salary);
         } else {
-            shortVacancy.setVacancySalary("опыт ваканскии не указан");
+            shortVacancy.setVacancySalary("размер з/п не указан");
         }
         shortVacancy.setVacancyName(v.getName());
         shortVacancy.setId(String.valueOf(v.getId()));
@@ -46,7 +53,7 @@ public class VacancyWriter implements VacancyWriterInt {
     }
 
     /**
-     * запись прлей объекта Vacancy в txt файл
+     * запись полей объекта Vacancy в txt файл
      *
      * @param list список вакансий, полученных из VacancyUtil (метод getVacancy)
      */
@@ -56,7 +63,6 @@ public class VacancyWriter implements VacancyWriterInt {
         for (HhVacancy hhVacancy : list) {
             result.add(convert(hhVacancy));
         }
-
         write(result);
     }
 

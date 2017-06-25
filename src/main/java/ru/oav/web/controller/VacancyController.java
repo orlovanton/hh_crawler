@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.oav.entity.HhVacancy;
+import ru.oav.formatvacancy.Vacancy;
 import ru.oav.json.VacancyService;
 import ru.oav.web.dto.VacancyDto;
 
@@ -19,21 +20,17 @@ public class VacancyController {
     @RequestMapping("/")
     public String index(Model model) {
 
-        //todo: читать из файла
-//        VacancyService.getVacancies(40, "java");
-        final List<HhVacancy> list = null;
-
-
-
-        final List<VacancyDto> dtoList = new ArrayList<>();
-
-        for (HhVacancy hhVacancy : list) {
-            dtoList.add(new VacancyDto(hhVacancy));
-        }
-
-        model.addAttribute("list", dtoList);
-
+        List<Vacancy> vacancies = VacancyService.getVacancies(20);
+//        for (Vacancy vacancy:    vacancies ) {
+//            System.out.println(vacancy.getVacancyName());
+//            System.out.println(vacancy.getVacancyArea());
+//            System.out.println(vacancy.getVacancySalary());
+//            System.out.println(vacancy.getVacancyExperience());
+//
+//        }
+        model.addAttribute("list", vacancies);
         return "index";
     }
+
 
 }

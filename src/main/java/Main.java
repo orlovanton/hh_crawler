@@ -15,13 +15,16 @@ public class Main {
     //https://github.com/hhru/api
     public static void main(String[] args) {
 
-        VacancyService.updateVacancies();
+//        VacancyService.updateVacancies();
+        VacancyService s = new VacancyService();
+        s.updateVacancies();
 
-        VacancyReader r = new VacancyReader();
-        List<Vacancy> allVacancies = r.getAllVacancies();
 
-        for (Vacancy allVacancy : allVacancies) {
-            System.out.println(allVacancy);
+//        VacancyReader r = new VacancyReader();
+//        List<Vacancy> allVacancies = r.getAllVacancies();
+//
+//        for (Vacancy allVacancy : allVacancies) {
+//            System.out.println(allVacancy);
         }
     }
-}
+

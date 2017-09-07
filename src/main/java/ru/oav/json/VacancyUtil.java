@@ -3,13 +3,14 @@ package ru.oav.json;
 import com.google.gson.Gson;
 import ru.oav.entity.HhResponse;
 import ru.oav.entity.HhVacancy;
+import ru.oav.formatvacancy.Vacancy;
 
 import java.util.List;
 
 /**
  * Created by antonorlov on 16/06/2017.
  */
-class VacancyUtil {
+public class VacancyUtil {
 
     /**
      * Поучить список вакансий с конкретной страницы
@@ -43,5 +44,36 @@ class VacancyUtil {
         String vacancyStr = RequestUtil.getVacancy(id);
         HhVacancy vacancy = gson.fromJson(vacancyStr, HhVacancy.class);
         return vacancy;
+    }
+
+    public static Vacancy convert(HhVacancy v) {
+        Vacancy shortVacancy = new Vacancy();
+
+        if (v.getArea() != null) {
+            shortVacancy.setVacancyArea(v.getArea().getName());
+        } else {
+            shortVacancy.setVacancyArea("Город вакансии не указан");
+        }
+        if (v.getExperience() != null) {
+            shortVacancy.setVacancyExperience(v.getExperience().getName());
+        } else {
+            shortVacancy.setVacancyExperience("опыт вакансии не указан");
+        }
+        if (v.getSalary() != null) {
+            String salary = "";
+            if (v.getSalary().getFrom() != 0) {
+                salary += "от " + v.getSalary().getFrom() + " ";
+            }
+            if (v.getSalary().getTo() != 0) {
+                salary += "до " + v.getSalary().getTo();
+            }
+            shortVacancy.setVacancySalary(salary);
+        } else {
+            shortVacancy.setVacancySalary("размер з/п не указан");
+        }
+        shortVacancy.setVacancyName(v.getName());
+        shortVacancy.setId(String.valueOf(v.getId()));
+
+        return shortVacancy;
     }
 }

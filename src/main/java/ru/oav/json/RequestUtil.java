@@ -78,14 +78,17 @@ class RequestUtil {
 
     }
 
+    /**
+     * Получение json запрошенного через getRequest
+     *
+     * @param getRequest
+     * @return
+     */
     private static String getJson(HttpGet getRequest) {
         HttpClientBuilder builder = HttpClientBuilder.create();
 
         CloseableHttpClient httpClient = builder.build();
         try {
-
-//            System.out.println("URL : " + getRequest.getURI());
-
             getRequest.addHeader("accept", "application/json");
 
             HttpResponse response = getResponse(httpClient, getRequest);
@@ -100,7 +103,6 @@ class RequestUtil {
 
             String result = "";
             String output;
-//            System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
                 result += output;
             }
@@ -111,6 +113,7 @@ class RequestUtil {
             ex.printStackTrace();
         }
         return null;
+
     }
 
 

@@ -1,6 +1,7 @@
 package ru.oav.formatvacancy;
 
 import ru.oav.entity.HhVacancy;
+import ru.oav.json.VacancyUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.List;
  * Записывает лист вакнский, полученных из VacancyUtil (метод getVacancy) в txt файл
  * Created by PC on 16.06.2017.
  */
-public class VacancyWriter implements VacancyWriterInt {
+public class VacancyTxtWriter implements VacancyWriterInt {
 
     /**
      * Конвертирует класс HhVacancy в класс Vacancy
@@ -21,36 +22,7 @@ public class VacancyWriter implements VacancyWriterInt {
      * @param v объект вакансии
      * @return Vacancy (поля класса: город, опыт и з/п вакансии)
      */
-    public Vacancy convert(HhVacancy v) {
-        Vacancy shortVacancy = new Vacancy();
 
-        if (v.getArea() != null) {
-            shortVacancy.setVacancyArea(v.getArea().getName());
-        } else {
-            shortVacancy.setVacancyArea("Город вакансии не указан");
-        }
-        if (v.getExperience() != null) {
-            shortVacancy.setVacancyExperience(v.getExperience().getName());
-        } else {
-            shortVacancy.setVacancyExperience("опыт вакансии не указан");
-        }
-        if (v.getSalary() != null) {
-            String salary = "";
-            if (v.getSalary().getFrom() != 0) {
-                salary += "от " + v.getSalary().getFrom() + " ";
-            }
-            if (v.getSalary().getTo() != 0) {
-                salary += "до " + v.getSalary().getTo();
-            }
-            shortVacancy.setVacancySalary(salary);
-        } else {
-            shortVacancy.setVacancySalary("размер з/п не указан");
-        }
-        shortVacancy.setVacancyName(v.getName());
-        shortVacancy.setId(String.valueOf(v.getId()));
-
-        return shortVacancy;
-    }
 
     /**
      * запись полей объекта Vacancy в txt файл
@@ -61,12 +33,12 @@ public class VacancyWriter implements VacancyWriterInt {
     public void writeHhVacancy(List<HhVacancy> list) {
         List<Vacancy> result = new ArrayList<>();
         for (HhVacancy hhVacancy : list) {
-            result.add(convert(hhVacancy));
+            result.add(VacancyUtil.convert(hhVacancy));
         }
-        write(result);
+        insert(result);
     }
 
-    public void write(List<Vacancy> list) {
+    public void insert(List<Vacancy> list) {
         File vacancies = new File(Constanses.PATHFILE);
         PrintWriter out = null;
 

@@ -10,6 +10,17 @@ public class Vacancy {
     private String vacancyName;
     private String id;
 
+    public Vacancy() {
+    }
+
+    public Vacancy(String vacancyArea, String vacancyExperience, String vacancySalary, String vacancyName, String id) {
+        this.vacancyArea = vacancyArea;
+        this.vacancyExperience = vacancyExperience;
+        this.vacancySalary = vacancySalary;
+        this.vacancyName = vacancyName;
+        this.id = id;
+    }
+
     public String getVacancyArea() {
         return vacancyArea;
     }

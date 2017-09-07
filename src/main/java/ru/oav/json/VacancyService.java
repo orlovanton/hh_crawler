@@ -2,8 +2,8 @@ package ru.oav.json;
 
 import ru.oav.entity.HhVacancy;
 import ru.oav.formatvacancy.Vacancy;
-import ru.oav.formatvacancy.VacancyReader;
-import ru.oav.formatvacancy.VacancyWriter;
+import ru.oav.formatvacancy.VacancyTxtReader;
+import ru.oav.formatvacancy.VacancyTxtWriter;
 
 import java.util.*;
 
@@ -13,14 +13,14 @@ import java.util.*;
 public class VacancyService {
 
     public static List<Vacancy> getVacancies(int number) {
-        VacancyReader reader = new VacancyReader();
+        VacancyTxtReader reader = new VacancyTxtReader();
         return reader.getAllVacancies();
     }
 
     public static void updateVacancies() {
 
         //зачитать текущие
-        VacancyReader reader = new VacancyReader();
+        VacancyTxtReader reader = new VacancyTxtReader();
         List<Vacancy> savedVacancies = reader.getAllVacancies();
         //добавить в мапку
         Map<String, Vacancy> map = new HashMap<>();
@@ -30,14 +30,13 @@ public class VacancyService {
         }
 
         //получить вакансии из API
-        List<HhVacancy> java = VacancyService.getVacancies(100, "java");
-        VacancyWriter wr = new VacancyWriter();
+        List<Vacancy> java = VacancyService.downloadVacancies(100, "java");
+        VacancyTxtWriter wr = new VacancyTxtWriter();
 
         //обогатить мапку новыми вакансиями
 
-        for (HhVacancy apiVacancy : java) {
-            Vacancy convert = wr.convert(apiVacancy);
-            map.put(convert.getId(), convert);
+        for (Vacancy v : java) {
+            map.put(v.getId(), v);
         }
 
         //записать мапку в файл
@@ -45,7 +44,7 @@ public class VacancyService {
 
         List<Vacancy> vacancyList = new ArrayList<>(values);
 
-        wr.write(vacancyList);
+        wr.insert(vacancyList);
     }
 
     /**
@@ -55,7 +54,7 @@ public class VacancyService {
      * @param query  поисковое слово, например java
      * @return список вакансий
      */
-    public static List<HhVacancy> getVacancies(int number, String query) {
+    public static List<Vacancy> downloadVacancies(int number, String query) {
         int totalPages = getTotalPages(query);
         int counter = 0;
         final List<HhVacancy> result = new ArrayList<>(number);
@@ -63,7 +62,7 @@ public class VacancyService {
         for (int i = 0; i < totalPages; i++) {
             if (counter >= number) {
                 //тут явно косяк т.к. кол-во значений будет неравно number - пока так оставим
-                return result;
+                return convert(result);
             }
             String vacanciesJson = RequestUtil.getVacansies(0, query);
             List<HhVacancy> vacancies = VacancyUtil.convertToVacancies(vacanciesJson);
@@ -71,8 +70,18 @@ public class VacancyService {
             counter += vacancies.size();
         }
 
-        return result;
+        return convert(result);
 
+    }
+
+    private static List<Vacancy> convert(List<HhVacancy> list){
+        List<Vacancy> vacancies = new ArrayList<>();
+
+        for (HhVacancy apiVacancy : list) {
+            Vacancy convert = VacancyUtil.convert(apiVacancy);
+            vacancies.add(convert);
+        }
+        return vacancies;
     }
     /**
      * Получить кол-во страниц по поисковому запросу

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by PC on 17.06.2017.
  */
-public class VacancyReader implements VacancyReaderInt {
+public class VacancyTxtReader implements VacancyReaderInt {
 
 
     /**

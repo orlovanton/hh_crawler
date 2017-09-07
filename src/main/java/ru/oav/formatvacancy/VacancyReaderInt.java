@@ -8,7 +8,7 @@ import java.util.List;
 public interface VacancyReaderInt {
 
     /**
-     * Получить список всех вакансий из файла
+     * Получить список всех вакансий
      *
      * @return
      */

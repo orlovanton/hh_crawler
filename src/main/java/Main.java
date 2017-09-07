@@ -1,7 +1,4 @@
-import ru.oav.entity.HhVacancy;
-import ru.oav.formatvacancy.Vacancy;
-import ru.oav.formatvacancy.VacancyReader;
-import ru.oav.formatvacancy.VacancyWriter;
+import ru.oav.formatvacancy.*;
 import ru.oav.json.VacancyService;
 
 import java.util.List;
@@ -16,15 +13,18 @@ public class Main {
     public static void main(String[] args) {
 
 //        VacancyService.updateVacancies();
-        VacancyService s = new VacancyService();
-        s.updateVacancies();
-
-
-//        VacancyReader r = new VacancyReader();
-//        List<Vacancy> allVacancies = r.getAllVacancies();
+//        s.updateVacancies();
+//        VacancyDBReader reader = new VacancyDBReader();
+//        List<Vacancy> allVacancies = reader.getAllVacancies();
 //
 //        for (Vacancy allVacancy : allVacancies) {
 //            System.out.println(allVacancy);
+        List<Vacancy> vacancies = VacancyService.downloadVacancies(100,"java");
+        VacancyDBWriter wr = new VacancyDBWriter();
+        wr.insert(vacancies);
+
+
         }
     }
+
 

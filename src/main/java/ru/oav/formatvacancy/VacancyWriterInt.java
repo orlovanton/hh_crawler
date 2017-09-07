@@ -11,7 +11,6 @@ public interface VacancyWriterInt {
 
     void writeHhVacancy(List<HhVacancy> list);
 
-    void write(List<Vacancy> list);
+    void insert(List<Vacancy> list);
 
-    Vacancy convert(HhVacancy v);
 }

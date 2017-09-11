@@ -13,4 +13,7 @@ public interface VacancyReaderInt {
      * @return
      */
     List<Vacancy> getAllVacancies();
+
+
+    List<Vacancy> getVacancies(int number);
 }

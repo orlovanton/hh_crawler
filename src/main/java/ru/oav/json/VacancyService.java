@@ -1,9 +1,7 @@
 package ru.oav.json;
 
 import ru.oav.entity.HhVacancy;
-import ru.oav.formatvacancy.Vacancy;
-import ru.oav.formatvacancy.VacancyTxtReader;
-import ru.oav.formatvacancy.VacancyTxtWriter;
+import ru.oav.formatvacancy.*;
 
 import java.util.*;
 
@@ -12,8 +10,16 @@ import java.util.*;
  */
 public class VacancyService {
 
+    public static final String MODE="DB";
+
     public static List<Vacancy> getVacancies(int number) {
-        VacancyTxtReader reader = new VacancyTxtReader();
+        VacancyReaderInt reader;
+        //todo: брать режим из .property файла
+        if ("DB".equals(MODE)) {
+            reader = new VacancyDBReader();
+        } else {
+            reader = new VacancyTxtReader();
+        }
         return reader.getAllVacancies();
     }
 
@@ -64,7 +70,7 @@ public class VacancyService {
                 //тут явно косяк т.к. кол-во значений будет неравно number - пока так оставим
                 return convert(result);
             }
-            String vacanciesJson = RequestUtil.getVacansies(0, query);
+            String vacanciesJson = RequestUtil.getVacancies(0, query);
             List<HhVacancy> vacancies = VacancyUtil.convertToVacancies(vacanciesJson);
             result.addAll(vacancies);
             counter += vacancies.size();
@@ -90,7 +96,7 @@ public class VacancyService {
      * @return
      */
     private static int getTotalPages(final String query) {
-        final String json = RequestUtil.getVacansies(query);
+        final String json = RequestUtil.getVacancies(query);
         return VacancyUtil.getTotalPages(json);
     }
 }

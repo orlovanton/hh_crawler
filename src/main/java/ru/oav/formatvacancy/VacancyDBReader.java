@@ -52,4 +52,9 @@ public class VacancyDBReader implements VacancyReaderInt {
         return listOfVacancies;
     }
 
+    @Override
+    public List<Vacancy> getVacancies(int number) {
+        //todo: implement
+        return null;
+    }
 }

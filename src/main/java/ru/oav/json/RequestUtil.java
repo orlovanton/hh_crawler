@@ -45,8 +45,8 @@ class RequestUtil {
         return null;
     }
 
-    public static String getVacansies(final String query) {
-        return getVacansies(0, query);
+    public static String getVacancies(final String query) {
+        return getVacancies(0, query);
     }
 
     /**
@@ -56,7 +56,7 @@ class RequestUtil {
      * @param query поисковой запрос
      * @return
      */
-    public static String getVacansies(int page, final String query) {
+    public static String getVacancies(int page, final String query) {
 
         try {
             URI uri = new URIBuilder()

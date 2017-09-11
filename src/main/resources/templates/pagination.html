@@ -11,11 +11,15 @@
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
+
+        <li th:each="i : ${#numbers.sequence( 1, totalPages)}">
+            <div th:if="${i != (currentPage)}" th:remove="tag">
+                <a th:href="@{/{url}{pageNum}(pageNum=${i},url=${url})}" th:text="${i}" class="grey-text"></a>
+            </div>
+            <div th:if="${i == (currentPage)}" th:remove="tag">
+                <span th:text="${i}" class="orange-text"></span>
+            </div>
+        </li>
         <li>
             <a href="#" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>

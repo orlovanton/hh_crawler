@@ -83,7 +83,7 @@ public class VacancyService {
                 //тут явно косяк т.к. кол-во значений будет неравно number - пока так оставим
                 return convert(result);
             }
-            String vacanciesJson = RequestUtil.getVacansies(i, query);
+            String vacanciesJson = RequestUtil.getVacancies(i, query);
             List<HhVacancy> vacancies = VacancyUtil.convertToVacancies(vacanciesJson);
             result.addAll(vacancies);
             counter += vacancies.size();
@@ -110,7 +110,7 @@ public class VacancyService {
      * @return
      */
     private static int getTotalPages(final String query) {
-        final String json = RequestUtil.getVacansies(query);
+        final String json = RequestUtil.getVacancies(query);
         return VacancyUtil.getTotalPages(json);
     }
 }

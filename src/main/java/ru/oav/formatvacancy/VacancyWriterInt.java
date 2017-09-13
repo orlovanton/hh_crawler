@@ -2,6 +2,7 @@ package ru.oav.formatvacancy;
 
 import ru.oav.entity.HhVacancy;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -11,6 +12,10 @@ public interface VacancyWriterInt {
 
     void writeHhVacancy(List<HhVacancy> list);
 
-    void insert(List<Vacancy> list);
+    void insert(Collection<Vacancy> list);
+
+    void deleteVacancy(String id);
+
+    void updateVacancy(Vacancy vacancy);
 
 }

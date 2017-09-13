@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public class VacancyTxtWriter implements VacancyWriterInt {
         insert(result);
     }
 
-    public void insert(List<Vacancy> list) {
+    public void insert(Collection<Vacancy> list) {
         File vacancies = new File(Constanses.PATHFILE);
         PrintWriter out = null;
 
@@ -70,5 +71,15 @@ public class VacancyTxtWriter implements VacancyWriterInt {
                 out.close();
             }
         }
+    }
+
+    @Override
+    public void updateVacancy(Vacancy vacancy) {
+
+    }
+
+    @Override
+    public void deleteVacancy(String id) {
+
     }
 }

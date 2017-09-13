@@ -45,10 +45,10 @@ public class VacancyDBReader implements VacancyReaderInt {
                 try {
                     conn.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }
-
         return listOfVacancies;
     }
 

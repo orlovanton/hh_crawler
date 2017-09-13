@@ -2,7 +2,7 @@ drop table if exists vacancy;
 
 create table vacancy (
   id varchar(32) not null,
-  vacancyname varchar(32) not null,
+  vacancyname varchar(300) not null,
   vacancysalary varchar(32) not null,
   vacancyexperience varchar(32) not null,
   vacancyarea varchar(32) not null,

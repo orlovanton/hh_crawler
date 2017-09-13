@@ -1,9 +1,7 @@
 package ru.oav.json;
 
 import ru.oav.entity.HhVacancy;
-import ru.oav.formatvacancy.Vacancy;
-import ru.oav.formatvacancy.VacancyTxtReader;
-import ru.oav.formatvacancy.VacancyTxtWriter;
+import ru.oav.formatvacancy.*;
 
 import java.util.*;
 
@@ -12,39 +10,60 @@ import java.util.*;
  */
 public class VacancyService {
 
+
     public static List<Vacancy> getVacancies(int number) {
         VacancyTxtReader reader = new VacancyTxtReader();
         return reader.getAllVacancies();
     }
 
+
     public static void updateVacancies() {
+        VacancyReaderInt reader;
+        VacancyWriterInt writer;
+        if ("db".equals(Constanses.MODE)) {
+            reader = new VacancyDBReader();
+            writer = new VacancyDBWriter();
+        } else {
+            reader = new VacancyTxtReader();
+            writer = new VacancyTxtWriter();
+        }
 
-        //зачитать текущие
-        VacancyTxtReader reader = new VacancyTxtReader();
         List<Vacancy> savedVacancies = reader.getAllVacancies();
-        //добавить в мапку
-        Map<String, Vacancy> map = new HashMap<>();
-
-        for (Vacancy savedVacancy : savedVacancies) {
-            map.put(savedVacancy.getId(), savedVacancy);
-        }
-
         //получить вакансии из API
-        List<Vacancy> java = VacancyService.downloadVacancies(100, "java");
-        VacancyTxtWriter wr = new VacancyTxtWriter();
+        List<Vacancy> downloadedVacancies = VacancyService.downloadVacancies(100, "java");
 
-        //обогатить мапку новыми вакансиями
+        Map<String, Vacancy> savedVacanciesMap = new HashMap<>();
 
-        for (Vacancy v : java) {
-            map.put(v.getId(), v);
+        //добавить все вакансии в мапку
+        for (Vacancy savedVacancy : savedVacancies) {
+            savedVacanciesMap.put(savedVacancy.getId(), savedVacancy);
+        }
+        //удалить устаревшие вакансии
+        for (Vacancy vacancy : downloadedVacancies) {
+            if (!savedVacanciesMap.containsKey(vacancy.getId())) {
+                savedVacanciesMap.remove(vacancy.getId());
+                writer.deleteVacancy(vacancy.getId());
+            }
+        }
+        //todo: с ХХ иногда затягиваются вакансии с одинаковым идентификатором
+        Set<Vacancy> newVacancies = new HashSet<>();
+        List<Vacancy> updatedVacancies = new ArrayList<>();
+        for (Vacancy downloadedVacancy : downloadedVacancies) {
+            if (savedVacanciesMap.containsKey(downloadedVacancy.getId())) {
+                if (!downloadedVacancy.equals(savedVacanciesMap.get(downloadedVacancy.getId()))) {
+                    updatedVacancies.add(downloadedVacancy);
+                }
+            } else {
+                newVacancies.add(downloadedVacancy);
+            }
+
         }
 
-        //записать мапку в файл
-        Collection<Vacancy> values = map.values();
-
-        List<Vacancy> vacancyList = new ArrayList<>(values);
-
-        wr.insert(vacancyList);
+        //записать мапку в файл или в БД
+        writer.insert(newVacancies);
+        for (Vacancy vacancy : updatedVacancies) {
+            writer.updateVacancy(vacancy);
+        }
     }
 
     /**
@@ -64,7 +83,7 @@ public class VacancyService {
                 //тут явно косяк т.к. кол-во значений будет неравно number - пока так оставим
                 return convert(result);
             }
-            String vacanciesJson = RequestUtil.getVacansies(0, query);
+            String vacanciesJson = RequestUtil.getVacansies(i, query);
             List<HhVacancy> vacancies = VacancyUtil.convertToVacancies(vacanciesJson);
             result.addAll(vacancies);
             counter += vacancies.size();
@@ -74,7 +93,7 @@ public class VacancyService {
 
     }
 
-    private static List<Vacancy> convert(List<HhVacancy> list){
+    private static List<Vacancy> convert(List<HhVacancy> list) {
         List<Vacancy> vacancies = new ArrayList<>();
 
         for (HhVacancy apiVacancy : list) {
@@ -83,6 +102,7 @@ public class VacancyService {
         }
         return vacancies;
     }
+
     /**
      * Получить кол-во страниц по поисковому запросу
      *

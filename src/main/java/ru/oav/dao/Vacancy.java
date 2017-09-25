@@ -1,24 +1,28 @@
-package ru.oav.formatvacancy;
+package ru.oav.dao;
 
 /**
  * Created by PC on 16.06.2017.
  */
 public class Vacancy {
-    private String vacancyArea;
-    private String vacancyExperience;
-    private String vacancySalary;
-    private String vacancyName;
     private String id;
+    private String vacancyName;
+    private String vacancyArea;
+    private String vacancySalary;
+    private String employer;
+    private String url;
+
 
     public Vacancy() {
     }
 
-    public Vacancy(String vacancyArea, String vacancyExperience, String vacancySalary, String vacancyName, String id) {
-        this.vacancyArea = vacancyArea;
-        this.vacancyExperience = vacancyExperience;
-        this.vacancySalary = vacancySalary;
-        this.vacancyName = vacancyName;
+
+    public Vacancy(String id, String vacancyName, String vacancyArea, String vacancySalary, String employer, String url) {
         this.id = id;
+        this.vacancyName = vacancyName;
+        this.vacancyArea = vacancyArea;
+        this.vacancySalary = vacancySalary;
+        this.employer = employer;
+        this.url = url;
     }
 
     public String getVacancyArea() {
@@ -27,14 +31,6 @@ public class Vacancy {
 
     public void setVacancyArea(String vacancyArea) {
         this.vacancyArea = vacancyArea;
-    }
-
-    public String getVacancyExperience() {
-        return vacancyExperience;
-    }
-
-    public void setVacancyExperience(String vacancyExperience) {
-        this.vacancyExperience = vacancyExperience;
     }
 
     public String getVacancySalary() {
@@ -61,6 +57,23 @@ public class Vacancy {
         this.id = id;
     }
 
+
+    public String getEmployer() {
+        return employer;
+    }
+
+    public void setEmployer(String employer) {
+        this.employer = employer;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,11 +92,12 @@ public class Vacancy {
     @Override
     public String toString() {
         return "Vacancy{" +
-                "vacancyArea='" + vacancyArea + '\'' +
-                ", vacancyExperience='" + vacancyExperience + '\'' +
-                ", vacancySalary='" + vacancySalary + '\'' +
+                "id='" + id + '\'' +
                 ", vacancyName='" + vacancyName + '\'' +
-                ", id='" + id + '\'' +
+                ", vacancyArea='" + vacancyArea + '\'' +
+                ", vacancySalary='" + vacancySalary + '\'' +
+                ", employer='" + employer + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

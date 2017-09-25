@@ -5,6 +5,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import ru.oav.util.PropertyHolder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -66,6 +67,7 @@ class RequestUtil {
                     .setParameter(TEXT_PARAM, query)
                     .setParameter(PAGE_PARAM, page + "")
                     .setParameter(AREA_PARAM, SPB_CODE)
+                    .setParameter(EXPERIENCE_PARAM, PropertyHolder.getInstance().getExperience().getCode())
                     .build();
             HttpGet getRequest = new HttpGet(uri);
 

@@ -5,27 +5,29 @@
 <body>
 <!--/*  Multiple fragments may be defined in one file */-->
 <nav aria-label="Page navigation" th:fragment="pagination">
-    <ul class="pagination">
-        <li>
-            <a href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
+    <div th:if="{totalPages != 0}" th:remove="tag">
+        <ul class="pagination">
+            <li>
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
 
-        <li th:each="i : ${#numbers.sequence( 1, totalPages)}">
-            <div th:if="${i != (currentPage)}" th:remove="tag">
-                <a th:href="@{/{url}{pageNum}(pageNum=${i},url=${url})}" th:text="${i}" class="grey-text"></a>
-            </div>
-            <div th:if="${i == (currentPage)}" th:remove="tag">
-                <span th:text="${i}" class="orange-text"></span>
-            </div>
-        </li>
-        <li>
-            <a href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
+            <li th:each="i : ${#numbers.sequence( 1, totalPages)}">
+                <div th:if="${i != (currentPage)}" th:remove="tag">
+                    <a th:href="@{/{url}{pageNum}(pageNum=${i},url=${url})}" th:text="${i}" class="grey-text"></a>
+                </div>
+                <div th:if="${i == (currentPage)}" th:remove="tag">
+                    <span th:text="${i}" class="orange-text"></span>
+                </div>
+            </li>
+            <li>
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </nav>
 </body>
 </html>

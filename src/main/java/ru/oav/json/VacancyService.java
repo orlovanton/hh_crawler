@@ -1,7 +1,8 @@
 package ru.oav.json;
 
+import ru.oav.dao.*;
 import ru.oav.entity.HhVacancy;
-import ru.oav.formatvacancy.*;
+import ru.oav.util.PropertyHolder;
 
 import java.util.*;
 
@@ -10,27 +11,26 @@ import java.util.*;
  */
 public class VacancyService {
 
+    public static final String DB_MODE = "db";
 
-    public static List<Vacancy> getVacancies(int number) {
-        VacancyTxtReader reader = new VacancyTxtReader();
-        return reader.getAllVacancies();
+    public static Collection<Vacancy> getVacancies(int page, int pageSize) {
+        VacancyReader reader = getReader();
+        return reader.getVacancies(page, pageSize);
+    }
+
+
+    public static void deleteAll(){
+        getWriter().deleteAll();
     }
 
 
     public static void updateVacancies() {
-        VacancyReaderInt reader;
-        VacancyWriterInt writer;
-        if ("db".equals(Constanses.MODE)) {
-            reader = new VacancyDBReader();
-            writer = new VacancyDBWriter();
-        } else {
-            reader = new VacancyTxtReader();
-            writer = new VacancyTxtWriter();
-        }
+        VacancyReader reader = getReader();
+        VacancyWriter writer = getWriter();
 
-        List<Vacancy> savedVacancies = reader.getAllVacancies();
+        Collection<Vacancy> savedVacancies = reader.getAllVacancies();
         //получить вакансии из API
-        List<Vacancy> downloadedVacancies = VacancyService.downloadVacancies(100, "java");
+        List<Vacancy> downloadedVacancies = VacancyService.downloadVacancies("java");
 
         Map<String, Vacancy> savedVacanciesMap = new HashMap<>();
 
@@ -69,17 +69,27 @@ public class VacancyService {
     /**
      * Получить список вакансий
      *
-     * @param number максимальное кол-во вакансий
-     * @param query  поисковое слово, например java
+     * @param query поисковое слово, например java
      * @return список вакансий
      */
-    public static List<Vacancy> downloadVacancies(int number, String query) {
+    public static List<Vacancy> downloadVacancies(String query) {
+        return downloadVacancies(Optional.empty(), query);
+    }
+
+    /**
+     * Получить список вакансий
+     *
+     * @param numberOptional максимальное кол-во вакансий
+     * @param query          поисковое слово, например java
+     * @return список вакансий
+     */
+    public static List<Vacancy> downloadVacancies(Optional<Integer> numberOptional, String query) {
         int totalPages = getTotalPages(query);
         int counter = 0;
-        final List<HhVacancy> result = new ArrayList<>(number);
+        final List<HhVacancy> result = new ArrayList<>();
 
         for (int i = 0; i < totalPages; i++) {
-            if (counter >= number) {
+            if (numberOptional.isPresent() && counter >= numberOptional.get()) {
                 //тут явно косяк т.к. кол-во значений будет неравно number - пока так оставим
                 return convert(result);
             }
@@ -91,6 +101,10 @@ public class VacancyService {
 
         return convert(result);
 
+    }
+
+    public static int getTotalPages(int perPage) {
+        return getReader().getTotal() / perPage;
     }
 
     private static List<Vacancy> convert(List<HhVacancy> list) {
@@ -112,5 +126,22 @@ public class VacancyService {
     private static int getTotalPages(final String query) {
         final String json = RequestUtil.getVacancies(query);
         return VacancyUtil.getTotalPages(json);
+    }
+
+
+    private static VacancyReader getReader() {
+        if (DB_MODE.equals(PropertyHolder.getInstance().getMode())) {
+            return new VacancyReaderDb();
+        } else {
+            return new VacancyReaderTxt();
+        }
+    }
+
+    private static VacancyWriter getWriter() {
+        if (DB_MODE.equals(PropertyHolder.getInstance().getMode())) {
+            return new VacancyWriterDb();
+        } else {
+            return new VacancyWriterTxt();
+        }
     }
 }

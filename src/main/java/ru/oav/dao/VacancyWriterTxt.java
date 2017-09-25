@@ -1,6 +1,7 @@
-package ru.oav.formatvacancy;
+package ru.oav.dao;
 
 import ru.oav.entity.HhVacancy;
+import ru.oav.formatvacancy.Constanses;
 import ru.oav.json.VacancyUtil;
 
 import java.io.File;
@@ -15,7 +16,7 @@ import java.util.List;
  * Записывает лист вакнский, полученных из VacancyUtil (метод getVacancy) в txt файл
  * Created by PC on 16.06.2017.
  */
-public class VacancyTxtWriter implements VacancyWriterInt {
+public class VacancyWriterTxt implements VacancyWriter {
 
     /**
      * Конвертирует класс HhVacancy в класс Vacancy

@@ -3,7 +3,7 @@ package ru.oav.json;
 import com.google.gson.Gson;
 import ru.oav.entity.HhResponse;
 import ru.oav.entity.HhVacancy;
-import ru.oav.formatvacancy.Vacancy;
+import ru.oav.dao.Vacancy;
 
 import java.util.List;
 
@@ -11,6 +11,8 @@ import java.util.List;
  * Created by antonorlov on 16/06/2017.
  */
 public class VacancyUtil {
+
+    private static final String BASE_URL = "https://spb.hh.ru/vacancy/";
 
     /**
      * Поучить список вакансий с конкретной страницы
@@ -54,11 +56,6 @@ public class VacancyUtil {
         } else {
             shortVacancy.setVacancyArea("Город вакансии не указан");
         }
-        if (v.getExperience() != null) {
-            shortVacancy.setVacancyExperience(v.getExperience().getName());
-        } else {
-            shortVacancy.setVacancyExperience("опыт вакансии не указан");
-        }
         if (v.getSalary() != null) {
             String salary = "";
             if (v.getSalary().getFrom() != 0) {
@@ -73,6 +70,10 @@ public class VacancyUtil {
         }
         shortVacancy.setVacancyName(v.getName());
         shortVacancy.setId(String.valueOf(v.getId()));
+        if (v.getEmployer() != null) {
+            shortVacancy.setEmployer(v.getEmployer().getName());
+        }
+        shortVacancy.setUrl(BASE_URL + v.getId());
 
         return shortVacancy;
     }

@@ -1,18 +1,15 @@
-package ru.oav.formatvacancy;
-
-import ru.oav.entity.HhVacancy;
+package ru.oav.dao;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by PC on 17.06.2017.
  */
-public interface VacancyWriterInt {
-
-    void writeHhVacancy(List<HhVacancy> list);
+public interface VacancyWriter {
 
     void insert(Collection<Vacancy> list);
+
+    void deleteAll();
 
     void deleteVacancy(String id);
 

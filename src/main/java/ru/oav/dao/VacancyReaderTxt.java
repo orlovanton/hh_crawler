@@ -1,16 +1,19 @@
-package ru.oav.formatvacancy;
+package ru.oav.dao;
+
+import ru.oav.util.PropertyHolder;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by PC on 17.06.2017.
  */
-public class VacancyTxtReader implements VacancyReaderInt {
+public class VacancyReaderTxt implements VacancyReader {
 
 
     /**
@@ -22,7 +25,7 @@ public class VacancyTxtReader implements VacancyReaderInt {
         List<Vacancy> listOfVacancies = new ArrayList<>();
 
         try {
-            FileInputStream fstream = new FileInputStream(Constanses.PATHFILE);
+            FileInputStream fstream = new FileInputStream(PropertyHolder.getInstance().getFilePath());
             BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
             String line;
 
@@ -37,7 +40,6 @@ public class VacancyTxtReader implements VacancyReaderInt {
                 vacancy.setId(fields[0]);
                 vacancy.setVacancyName(fields[1]);
                 vacancy.setVacancyArea(fields[2]);
-                vacancy.setVacancyExperience(fields[3]);
                 vacancy.setVacancySalary(fields[4]);
                 listOfVacancies.add(vacancy);
             }
@@ -48,8 +50,14 @@ public class VacancyTxtReader implements VacancyReaderInt {
     }
 
     @Override
-    public List<Vacancy> getVacancies(int number) {
-//        todo: impl
-        return null;
+    public Collection<Vacancy> getVacancies(int page, int pageSize) {
+        //todo:
+        throw new UnsupportedOperationException("not impl");
+    }
+
+    @Override
+    public int getTotal() {
+        //todo:
+        throw new UnsupportedOperationException("not impl");
     }
 }

@@ -1,4 +1,4 @@
-package ru.oav.json;
+package ru.oav.service;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;

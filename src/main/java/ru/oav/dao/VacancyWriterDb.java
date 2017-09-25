@@ -11,15 +11,10 @@ public class VacancyWriterDb extends VacancyBaseDao implements VacancyWriter {
             "(id, vacancyname, vacancysalary, vacancyarea, employer, url) " +
             "values (?,?,?,?,?,?)";
 
+    private static final String DELETE_BY_ID = "delete from vacancy where id = ?";
 
-    private static final String DELETE_BY_ID="delete from vacancy where id = ?";
+    private static final String DELETE_ALL = "delete from vacancy";
 
-    private static final String DELETE_ALL="delete from vacancy";
-
-    @Override
-    public void deleteAll() {
-
-    }
 
     @Override
     public void insert(Collection<Vacancy> list) {
@@ -40,28 +35,6 @@ public class VacancyWriterDb extends VacancyBaseDao implements VacancyWriter {
             ps.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-    }
-
-    @Override
-    public void deleteVacancy(String id) {
-        Connection conn = null;
-        try {
-            conn = getConnection();
-
-            PreparedStatement ps = conn.prepareStatement(DELETE_BY_ID);
-            ps.setString(1,id);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
             if (conn != null) {
                 try {
@@ -101,7 +74,52 @@ public class VacancyWriterDb extends VacancyBaseDao implements VacancyWriter {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
         }
 
     }
+
+    @Override
+    public void deleteVacancy(String id) {
+        baseDelete(DELETE_BY_ID, id);
+    }
+
+    @Override
+    public void deleteAll() {
+        baseDelete(DELETE_ALL, null);
+    }
+
+
+    private void baseDelete(String query, String id) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            if (id != null) {
+                ps.setString(1, id);
+            }
+
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
+
+
 }

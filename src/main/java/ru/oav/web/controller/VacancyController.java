@@ -5,8 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.oav.dao.Vacancy;
-import ru.oav.json.ExperienceEnum;
-import ru.oav.json.VacancyService;
+import ru.oav.util.ExperienceEnum;
+import ru.oav.service.VacancyService;
 import ru.oav.util.PropertyHolder;
 
 import java.util.Collection;

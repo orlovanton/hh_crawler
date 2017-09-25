@@ -1,7 +1,5 @@
 package ru.oav.util;
 
-import ru.oav.json.ExperienceEnum;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;

@@ -1,15 +1,11 @@
 package ru.oav.dao;
 
-import ru.oav.entity.HhVacancy;
-import ru.oav.formatvacancy.Constanses;
-import ru.oav.json.VacancyUtil;
+import ru.oav.util.PropertyHolder;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Конвертирует класс HhVacancy в класс Vacancy (поля класса: город, опыт и з/п вакансии)
@@ -21,27 +17,12 @@ public class VacancyWriterTxt implements VacancyWriter {
     /**
      * Конвертирует класс HhVacancy в класс Vacancy
      *
-     * @param v объект вакансии
      * @return Vacancy (поля класса: город, опыт и з/п вакансии)
      */
 
 
-    /**
-     * запись полей объекта Vacancy в txt файл
-     *
-     * @param list список вакансий, полученных из VacancyUtil (метод getVacancy)
-     */
-
-    public void writeHhVacancy(List<HhVacancy> list) {
-        List<Vacancy> result = new ArrayList<>();
-        for (HhVacancy hhVacancy : list) {
-            result.add(VacancyUtil.convert(hhVacancy));
-        }
-        insert(result);
-    }
-
     public void insert(Collection<Vacancy> list) {
-        File vacancies = new File(Constanses.PATHFILE);
+        File vacancies = new File(PropertyHolder.getInstance().getFilePath());
         PrintWriter out = null;
 
         try {
@@ -59,8 +40,6 @@ public class VacancyWriterTxt implements VacancyWriter {
                 sb.append(separator);
                 sb.append(convert.getVacancyArea());
                 sb.append(separator);
-                sb.append(convert.getVacancyExperience());
-                sb.append(separator);
                 sb.append(convert.getVacancySalary());
                 sb.append(System.lineSeparator());
                 out.print(sb);
@@ -76,11 +55,16 @@ public class VacancyWriterTxt implements VacancyWriter {
 
     @Override
     public void updateVacancy(Vacancy vacancy) {
-
+        throw new UnsupportedOperationException("not impl");
     }
 
     @Override
     public void deleteVacancy(String id) {
+        throw new UnsupportedOperationException("not impl");
+    }
 
+    @Override
+    public void deleteAll() {
+        throw new UnsupportedOperationException("not impl");
     }
 }

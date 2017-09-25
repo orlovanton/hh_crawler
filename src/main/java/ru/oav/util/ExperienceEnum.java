@@ -1,4 +1,4 @@
-package ru.oav.json;
+package ru.oav.util;
 
 /**
  * Created by antonorlov on 25/09/2017.

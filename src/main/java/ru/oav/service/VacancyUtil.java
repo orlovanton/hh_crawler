@@ -1,10 +1,11 @@
-package ru.oav.json;
+package ru.oav.service;
 
 import com.google.gson.Gson;
+import ru.oav.dao.Vacancy;
 import ru.oav.entity.HhResponse;
 import ru.oav.entity.HhVacancy;
-import ru.oav.dao.Vacancy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +14,34 @@ import java.util.List;
 public class VacancyUtil {
 
     private static final String BASE_URL = "https://spb.hh.ru/vacancy/";
+
+
+    /**
+     * Получить список вакансий
+     *
+     * @param number максимальное кол-во вакансий, -1 - все
+     * @param query  поисковое слово, например java
+     * @return список вакансий
+     */
+    static List<Vacancy> downloadVacancies(String query, int number) {
+        int totalPages = getTotalPages(query);
+        int counter = 0;
+        final List<HhVacancy> result = new ArrayList<>();
+
+        for (int i = 0; i < totalPages; i++) {
+            if (number != -1 && counter >= number) {
+                //тут явно косяк т.к. кол-во значений будет неравно number - пока так оставим
+                return convert(result);
+            }
+            String vacanciesJson = RequestUtil.getVacancies(i, query);
+            List<HhVacancy> vacancies = VacancyUtil.convertToVacancies(vacanciesJson);
+            result.addAll(vacancies);
+            counter += vacancies.size();
+        }
+
+        return convert(result);
+
+    }
 
     /**
      * Поучить список вакансий с конкретной страницы
@@ -25,14 +54,32 @@ public class VacancyUtil {
         return hhResponse.getItems();
     }
 
-    public static int getTotalPages(final String json) {
+
+    private static List<Vacancy> convert(List<HhVacancy> list) {
+        List<Vacancy> vacancies = new ArrayList<>();
+
+        for (HhVacancy apiVacancy : list) {
+            Vacancy convert = VacancyUtil.convert(apiVacancy);
+            vacancies.add(convert);
+        }
+        return vacancies;
+    }
 
 
+    /**
+     * Получить кол-во страниц по поисковому запросу
+     *
+     * @param query поисковой запрос
+     * @return
+     */
+    private static int getTotalPages(final String query) {
+        final String json = RequestUtil.getVacancies(query);
         Gson gson = new Gson();
         HhResponse hhResponse = gson.fromJson(json, HhResponse.class);
 
         return hhResponse.getPages();
     }
+
 
     /**
      * Получить вакансию по ее идентификатору

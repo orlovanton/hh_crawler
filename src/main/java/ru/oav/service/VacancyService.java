@@ -1,7 +1,6 @@
-package ru.oav.json;
+package ru.oav.service;
 
 import ru.oav.dao.*;
-import ru.oav.entity.HhVacancy;
 import ru.oav.util.PropertyHolder;
 
 import java.util.*;
@@ -12,6 +11,7 @@ import java.util.*;
 public class VacancyService {
 
     public static final String DB_MODE = "db";
+    public static final String SEARCH_QUERY = "java";
 
     public static Collection<Vacancy> getVacancies(int page, int pageSize) {
         VacancyReader reader = getReader();
@@ -19,7 +19,7 @@ public class VacancyService {
     }
 
 
-    public static void deleteAll(){
+    public static void deleteAll() {
         getWriter().deleteAll();
     }
 
@@ -30,7 +30,7 @@ public class VacancyService {
 
         Collection<Vacancy> savedVacancies = reader.getAllVacancies();
         //получить вакансии из API
-        List<Vacancy> downloadedVacancies = VacancyService.downloadVacancies("java");
+        List<Vacancy> downloadedVacancies = VacancyService.downloadVacancies(SEARCH_QUERY);
 
         Map<String, Vacancy> savedVacanciesMap = new HashMap<>();
 
@@ -73,59 +73,12 @@ public class VacancyService {
      * @return список вакансий
      */
     public static List<Vacancy> downloadVacancies(String query) {
-        return downloadVacancies(Optional.empty(), query);
+        return VacancyUtil.downloadVacancies(query,-1);
     }
 
-    /**
-     * Получить список вакансий
-     *
-     * @param numberOptional максимальное кол-во вакансий
-     * @param query          поисковое слово, например java
-     * @return список вакансий
-     */
-    public static List<Vacancy> downloadVacancies(Optional<Integer> numberOptional, String query) {
-        int totalPages = getTotalPages(query);
-        int counter = 0;
-        final List<HhVacancy> result = new ArrayList<>();
-
-        for (int i = 0; i < totalPages; i++) {
-            if (numberOptional.isPresent() && counter >= numberOptional.get()) {
-                //тут явно косяк т.к. кол-во значений будет неравно number - пока так оставим
-                return convert(result);
-            }
-            String vacanciesJson = RequestUtil.getVacancies(i, query);
-            List<HhVacancy> vacancies = VacancyUtil.convertToVacancies(vacanciesJson);
-            result.addAll(vacancies);
-            counter += vacancies.size();
-        }
-
-        return convert(result);
-
-    }
 
     public static int getTotalPages(int perPage) {
         return getReader().getTotal() / perPage;
-    }
-
-    private static List<Vacancy> convert(List<HhVacancy> list) {
-        List<Vacancy> vacancies = new ArrayList<>();
-
-        for (HhVacancy apiVacancy : list) {
-            Vacancy convert = VacancyUtil.convert(apiVacancy);
-            vacancies.add(convert);
-        }
-        return vacancies;
-    }
-
-    /**
-     * Получить кол-во страниц по поисковому запросу
-     *
-     * @param query поисковой запрос
-     * @return
-     */
-    private static int getTotalPages(final String query) {
-        final String json = RequestUtil.getVacancies(query);
-        return VacancyUtil.getTotalPages(json);
     }
 
 

@@ -51,7 +51,7 @@
                 <td th:text="${vacancies.vacancyArea}"></td>
                 <td th:text="${vacancies.vacancySalary}"></td>
                 <td th:text="${vacancies.employer}"></td>
-                <td th:text="${vacancies.url}"></td>
+                <td> <a th:href="@{${vacancies.url}}" target="_blank">Ссылка</a></td>
             </tr>
         </table>
         <div class="text-center">

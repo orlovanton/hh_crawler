@@ -9,10 +9,10 @@ public interface VacancyWriter {
 
     void insert(Collection<Vacancy> list);
 
-    void deleteAll();
+    void updateVacancy(Vacancy vacancy);
 
     void deleteVacancy(String id);
 
-    void updateVacancy(Vacancy vacancy);
+    void deleteAll();
 
 }

@@ -1,4 +1,4 @@
-package ru.oav.service;
+package ru.oav.service.download;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -16,7 +16,7 @@ import java.net.URISyntaxException;
 /**
  * Created by antonorlov on 16/06/2017.
  */
-class RequestUtil {
+public class RequestUtil {
 
     private static final String VACANCIES_PATH = "vacancies";
     private static final String PAGE_PARAM = "page";

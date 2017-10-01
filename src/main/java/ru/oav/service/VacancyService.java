@@ -1,6 +1,8 @@
 package ru.oav.service;
 
 import ru.oav.dao.*;
+import ru.oav.service.download.AsyncVacancyDownloader;
+import ru.oav.service.download.SyncVacancyDownloader;
 import ru.oav.util.PropertyHolder;
 
 import java.util.*;
@@ -23,6 +25,9 @@ public class VacancyService {
     }
 
 
+    /**
+     * Обновить вакансии: удалить старые и записать новые
+     */
     public static void updateVacancies() {
         VacancyReader reader = getReader();
         VacancyWriter writer = getWriter();
@@ -31,7 +36,7 @@ public class VacancyService {
         final String searchQuery = PropertyHolder.getInstance().getSearchQuery();
 
         //получить вакансии из API
-        List<Vacancy> downloadedVacancies = VacancyService.downloadVacancies(searchQuery);
+        List<Vacancy> downloadedVacancies = VacancyService.downloadVacancies(searchQuery, true);
 
         Map<String, Vacancy> savedVacanciesMap = new HashMap<>();
 
@@ -72,12 +77,24 @@ public class VacancyService {
      * @param query поисковое слово, например java
      * @return список вакансий
      */
-    public static List<Vacancy> downloadVacancies(String query) {
-        return VacancyUtil.downloadVacancies(query,-1);
+    public static List<Vacancy> downloadVacancies(String query, boolean async) {
+        long start = System.currentTimeMillis();
+        if (async) {
+            List<Vacancy> download = AsyncVacancyDownloader.getInstance().download(query);
+            long done = System.currentTimeMillis();
+            System.out.println("Done async in " + (done - start));
+            return download;
+        } else {
+            List<Vacancy> download = SyncVacancyDownloader.getInstance().download(query);
+            long done = System.currentTimeMillis();
+            System.out.println("Done sync in " + (done - start));
+            return download;
+        }
     }
 
     /**
      * Кол-во страниц сохраненных записей
+     *
      * @param perPage элементов на странице
      * @return
      */
@@ -88,6 +105,7 @@ public class VacancyService {
 
     /**
      * Реализация чтения из файла или БД
+     *
      * @return
      */
     private static VacancyReader getReader() {

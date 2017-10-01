@@ -15,6 +15,8 @@ public class PropertyHolder {
     private static final String DB_USER = "user";
     private static final String DB_PASSWORD = "password";
     private static final String EXPERIENCE = "experience";
+    private static final String SEARCH_QUERY = "search_query";
+    private static final String BASE_URL = "base_url";
 
     private static PropertyHolder instance;
     private Properties properties;
@@ -49,6 +51,14 @@ public class PropertyHolder {
 
     public String getMode() {
         return (String) properties.get(HH_MODE);
+    }
+
+    public String getSearchQuery() {
+        return (String) properties.get(SEARCH_QUERY);
+    }
+    
+    public String getBaseUrl() {
+        return (String) properties.get(BASE_URL);
     }
 
     public ExperienceEnum getExperience() {

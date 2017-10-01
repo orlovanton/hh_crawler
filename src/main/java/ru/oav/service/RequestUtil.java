@@ -26,7 +26,6 @@ class RequestUtil {
     private static final String AREA_PARAM = "area";
     //опыт работы.
     private static final String EXPERIENCE_PARAM = "experience";
-
     //это код СПб в API HH
     private static final String SPB_CODE = "2";
 
@@ -51,7 +50,7 @@ class RequestUtil {
     }
 
     /**
-     * Получиь json с вакансиями
+     * Получиь вакансиии с указанием страницы
      *
      * @param page  страница
      * @param query поисковой запрос

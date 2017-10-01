@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import ru.oav.dao.Vacancy;
 import ru.oav.entity.HhResponse;
 import ru.oav.entity.HhVacancy;
+import ru.oav.util.PropertyHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,7 @@ import java.util.List;
  * Created by antonorlov on 16/06/2017.
  */
 public class VacancyUtil {
-
-    private static final String BASE_URL = "https://spb.hh.ru/vacancy/";
-
-
+    
     /**
      * Получить список вакансий
      *
@@ -120,7 +118,8 @@ public class VacancyUtil {
         if (v.getEmployer() != null) {
             shortVacancy.setEmployer(v.getEmployer().getName());
         }
-        shortVacancy.setUrl(BASE_URL + v.getId());
+        String baseUrl = PropertyHolder.getInstance().getBaseUrl();
+        shortVacancy.setUrl(baseUrl + v.getId());
 
         return shortVacancy;
     }

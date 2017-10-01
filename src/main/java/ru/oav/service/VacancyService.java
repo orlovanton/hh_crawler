@@ -11,7 +11,6 @@ import java.util.*;
 public class VacancyService {
 
     public static final String DB_MODE = "db";
-    public static final String SEARCH_QUERY = "java";
 
     public static Collection<Vacancy> getVacancies(int page, int pageSize) {
         VacancyReader reader = getReader();
@@ -29,8 +28,10 @@ public class VacancyService {
         VacancyWriter writer = getWriter();
 
         Collection<Vacancy> savedVacancies = reader.getAllVacancies();
+        final String searchQuery = PropertyHolder.getInstance().getSearchQuery();
+
         //получить вакансии из API
-        List<Vacancy> downloadedVacancies = VacancyService.downloadVacancies(SEARCH_QUERY);
+        List<Vacancy> downloadedVacancies = VacancyService.downloadVacancies(searchQuery);
 
         Map<String, Vacancy> savedVacanciesMap = new HashMap<>();
 
@@ -45,7 +46,6 @@ public class VacancyService {
                 writer.deleteVacancy(vacancy.getId());
             }
         }
-        //todo: с ХХ иногда затягиваются вакансии с одинаковым идентификатором
         Set<Vacancy> newVacancies = new HashSet<>();
         List<Vacancy> updatedVacancies = new ArrayList<>();
         for (Vacancy downloadedVacancy : downloadedVacancies) {
@@ -76,12 +76,20 @@ public class VacancyService {
         return VacancyUtil.downloadVacancies(query,-1);
     }
 
-
+    /**
+     * Кол-во страниц сохраненных записей
+     * @param perPage элементов на странице
+     * @return
+     */
     public static int getTotalPages(int perPage) {
         return getReader().getTotal() / perPage;
     }
 
 
+    /**
+     * Реализация чтения из файла или БД
+     * @return
+     */
     private static VacancyReader getReader() {
         if (DB_MODE.equals(PropertyHolder.getInstance().getMode())) {
             return new VacancyReaderDb();

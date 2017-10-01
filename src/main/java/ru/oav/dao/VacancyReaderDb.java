@@ -58,7 +58,7 @@ public class VacancyReaderDb extends VacancyBaseDao implements VacancyReader {
         return 0;
     }
 
-    private Collection<Vacancy> getVacancies(final String query, int... args) {
+    private Collection<Vacancy> getVacancies(final String query, int ... args) {
         Connection conn = null;
         List<Vacancy> listOfVacancies = new ArrayList<>();
         try {

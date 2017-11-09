@@ -1,6 +1,7 @@
 package ru.af.formatvacancy;
 
 import ru.af.entity.HhVacancy;
+import ru.af.json.VacancyService;
 import ru.af.json.VacancyUtil;
 
 import java.io.File;
@@ -11,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Позволяет записать вакансии или лист вакансий в txt фаил
+ * Позволяет записать вакансию или лист вакансий в txt файл
  */
 public class VacancyTxtWriter implements VacancyWriterInt {
 
@@ -22,9 +23,7 @@ public class VacancyTxtWriter implements VacancyWriterInt {
      */
     public void writeHhVacancy(List<HhVacancy> list) {
         List<Vacancy> result = new ArrayList<>();
-        for (HhVacancy hhVacancy : list) {
-            result.add(VacancyUtil.convert(hhVacancy));
-        }
+        VacancyUtil.convert(list);
         insert(result);
     }
 

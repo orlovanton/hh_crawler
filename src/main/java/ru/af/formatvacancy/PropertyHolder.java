@@ -12,9 +12,9 @@ public class PropertyHolder {
 
     public final String PATHFILE;
     public final String DB_URL;
-    public  static  final String USER;
-    public static final String PASSWORD;
-    public static final String MODE;
+    public final String USER;
+    public final String PASSWORD;
+    public final String MODE;
     private static PropertyHolder instance;
 
     private PropertyHolder() {

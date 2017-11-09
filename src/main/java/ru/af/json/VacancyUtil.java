@@ -4,18 +4,20 @@ import com.google.gson.Gson;
 import ru.af.entity.HhResponse;
 import ru.af.entity.HhVacancy;
 import ru.af.formatvacancy.Vacancy;
+import ru.af.formatvacancy.VacancyTxtReader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by antonorlov on 16/06/2017.
+ *
  */
 public class VacancyUtil {
 
     /**
-     * Поучить список вакансий с конкретной страницы
+     * Преобразует вакансии из формата json в список вакнсий в формате HhVacancy
      *
-     * @return
+     * @return список вакансий
      */
     public static List<HhVacancy> convertToVacancies(String json) {
         Gson gson = new Gson();
@@ -23,57 +25,58 @@ public class VacancyUtil {
         return hhResponse.getItems();
     }
 
-    public static int getTotalPages(final String json) {
-
+    /**
+     * Получить кол-во страниц по поисковому запросу
+     *
+     * @param query поисковой запрос
+     * @return кол-во вакансий
+     */
+    protected static int getTotalPages(final String query) {
+        final String json = RequestUtil.getVacancies(query);
 
         Gson gson = new Gson();
         HhResponse hhResponse = gson.fromJson(json, HhResponse.class);
-
         return hhResponse.getPages();
     }
 
     /**
-     * Получить вакансию по ее идентификатору
+     * Преобразует лист HHVacancy в лист Vacancy
      *
-     * @param id
-     * @return
+     * @param list список вакансий в формате HHVacancy
+     * @return список вакнсий в формате Vacancy
      */
-    public static HhVacancy getVacancy(final String id) {
-        Gson gson = new Gson();
+    public static List<Vacancy> convert(List<HhVacancy> list) {
+        List<Vacancy> vacancies = new ArrayList<>();
 
-        String vacancyStr = RequestUtil.getVacancy(id);
-        HhVacancy vacancy = gson.fromJson(vacancyStr, HhVacancy.class);
-        return vacancy;
-    }
+        for (HhVacancy v : list) {
+            Vacancy shortVacancy = new Vacancy();
 
-    public static Vacancy convert(HhVacancy v) {
-        Vacancy shortVacancy = new Vacancy();
-
-        if (v.getArea() != null) {
-            shortVacancy.setVacancyArea(v.getArea().getName());
-        } else {
-            shortVacancy.setVacancyArea("Город вакансии не указан");
-        }
-        if (v.getExperience() != null) {
-            shortVacancy.setVacancyExperience(v.getExperience().getName());
-        } else {
-            shortVacancy.setVacancyExperience("опыт вакансии не указан");
-        }
-        if (v.getSalary() != null) {
-            String salary = "";
-            if (v.getSalary().getFrom() != 0) {
-                salary += "от " + v.getSalary().getFrom() + " ";
+            if (v.getArea() != null) {
+                shortVacancy.setVacancyArea(v.getArea().getName());
+            } else {
+                shortVacancy.setVacancyArea("Город вакансии не указан");
             }
-            if (v.getSalary().getTo() != 0) {
-                salary += "до " + v.getSalary().getTo();
+            if (v.getExperience() != null) {
+                shortVacancy.setVacancyExperience(v.getExperience().getName());
+            } else {
+                shortVacancy.setVacancyExperience("опыт вакансии не указан");
             }
-            shortVacancy.setVacancySalary(salary);
-        } else {
-            shortVacancy.setVacancySalary("размер з/п не указан");
+            if (v.getSalary() != null) {
+                String salary = "";
+                if (v.getSalary().getFrom() != 0) {
+                    salary += "от " + v.getSalary().getFrom() + " ";
+                }
+                if (v.getSalary().getTo() != 0) {
+                    salary += "до " + v.getSalary().getTo();
+                }
+                shortVacancy.setVacancySalary(salary);
+            } else {
+                shortVacancy.setVacancySalary("размер з/п не указан");
+            }
+            shortVacancy.setVacancyName(v.getName());
+            shortVacancy.setId(String.valueOf(v.getId()));
+            vacancies.add(shortVacancy);
         }
-        shortVacancy.setVacancyName(v.getName());
-        shortVacancy.setId(String.valueOf(v.getId()));
-
-        return shortVacancy;
+        return vacancies;
     }
 }

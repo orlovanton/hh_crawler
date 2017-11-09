@@ -21,7 +21,8 @@ public class VacancyTxtReader implements VacancyReaderInt {
         List<Vacancy> listOfVacancies = new ArrayList<>();
 
         try {
-            FileInputStream fstream = new FileInputStream(PropertyHolder.PATHFILE);
+            FileInputStream fstream = new FileInputStream(
+                    PropertyHolder.getInstance().PATHFILE);
             BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
             String line;
 

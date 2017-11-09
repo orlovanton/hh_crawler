@@ -24,7 +24,6 @@ public class HhVacancy {
     private HhDepartment department;
     private List<HhKeySkill> keySkills;
 
-    //todo: specializations
 
 
     public String getName() {

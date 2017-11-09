@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface VacancyWriterInt {
 
-    void writeHhVacancy(List<HhVacancy> list);
+//    void writeHhVacancy(List<HhVacancy> list);
 
     void insert(Collection<Vacancy> list);
 

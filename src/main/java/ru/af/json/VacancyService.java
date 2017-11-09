@@ -2,25 +2,21 @@ package ru.af.json;
 
 import ru.af.entity.HhVacancy;
 import ru.af.formatvacancy.*;
-
 import java.util.*;
 
 /**
- * Created by antonorlov on 16/06/2017.
+ * Предоставляет функции обновления и получения вакансий из/в txt файл
  */
 public class VacancyService {
 
-
-    public static List<Vacancy> getVacancies(int number) {
-        VacancyTxtReader reader = new VacancyTxtReader();
-        return reader.getAllVacancies();
-    }
-
-
+    /**
+     * Обновить вакансии (запись новых вакансий, обновление старых и
+     * удаление уставевших вакансий)
+     */
     public static void updateVacancies() {
         VacancyReaderInt reader;
         VacancyWriterInt writer;
-        if ("db".equals(PropertyHolder.MODE)) {
+        if ("db".equals(PropertyHolder.getInstance().MODE)) {
             reader = new VacancyDBReader();
             writer = new VacancyDBWriter();
         } else {
@@ -30,10 +26,10 @@ public class VacancyService {
 
         List<Vacancy> savedVacancies = reader.getAllVacancies();
         //получить вакансии из API
-        List<Vacancy> downloadedVacancies = VacancyService.downloadVacancies(100, "java");
+        List<Vacancy> downloadedVacancies =
+                VacancyService.downloadVacancies(100, "java");
 
         Map<String, Vacancy> savedVacanciesMap = new HashMap<>();
-
         //добавить все вакансии в мапку
         for (Vacancy savedVacancy : savedVacancies) {
             savedVacanciesMap.put(savedVacancy.getId(), savedVacancy);
@@ -45,20 +41,19 @@ public class VacancyService {
                 writer.deleteVacancy(vacancy.getId());
             }
         }
-        //todo: с ХХ иногда затягиваются вакансии с одинаковым идентификатором
         Set<Vacancy> newVacancies = new HashSet<>();
         List<Vacancy> updatedVacancies = new ArrayList<>();
+
         for (Vacancy downloadedVacancy : downloadedVacancies) {
             if (savedVacanciesMap.containsKey(downloadedVacancy.getId())) {
-                if (!downloadedVacancy.equals(savedVacanciesMap.get(downloadedVacancy.getId()))) {
+                if (!downloadedVacancy.equals(
+                        savedVacanciesMap.get(downloadedVacancy.getId()))) {
                     updatedVacancies.add(downloadedVacancy);
                 }
             } else {
                 newVacancies.add(downloadedVacancy);
             }
-
         }
-
         //записать мапку в файл или в БД
         writer.insert(newVacancies);
         for (Vacancy vacancy : updatedVacancies) {
@@ -67,50 +62,37 @@ public class VacancyService {
     }
 
     /**
-     * Получить список вакансий
+     * Получить список вакансий из API HH
      *
      * @param number максимальное кол-во вакансий
      * @param query  поисковое слово, например java
      * @return список вакансий
      */
-    public static List<Vacancy> downloadVacancies(int number, String query) {
-        int totalPages = getTotalPages(query);
+    private static List<Vacancy> downloadVacancies(int number, String query) {
+        int totalPages = VacancyUtil.getTotalPages(query);
         int counter = 0;
         final List<HhVacancy> result = new ArrayList<>(number);
 
         for (int i = 0; i < totalPages; i++) {
             if (counter >= number) {
-                //тут явно косяк т.к. кол-во значений будет неравно number - пока так оставим
-                return convert(result);
+                return VacancyUtil.convert(result);
             }
             String vacanciesJson = RequestUtil.getVacancies(i, query);
             List<HhVacancy> vacancies = VacancyUtil.convertToVacancies(vacanciesJson);
             result.addAll(vacancies);
             counter += vacancies.size();
         }
-
-        return convert(result);
-
-    }
-
-    private static List<Vacancy> convert(List<HhVacancy> list) {
-        List<Vacancy> vacancies = new ArrayList<>();
-
-        for (HhVacancy apiVacancy : list) {
-            Vacancy convert = VacancyUtil.convert(apiVacancy);
-            vacancies.add(convert);
-        }
-        return vacancies;
+        return VacancyUtil.convert(result);
     }
 
     /**
-     * Получить кол-во страниц по поисковому запросу
+     * Получичть список вакансий из txt файла
      *
-     * @param query поисковой запрос
-     * @return
+     * @return список вакансий из txt файла
      */
-    private static int getTotalPages(final String query) {
-        final String json = RequestUtil.getVacancies(query);
-        return VacancyUtil.getTotalPages(json);
+    public static List<Vacancy> getVacancies() {
+        VacancyTxtReader reader = new VacancyTxtReader();
+        return reader.getAllVacancies();
     }
+
 }

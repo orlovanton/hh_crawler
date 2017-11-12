@@ -19,8 +19,8 @@ public class VacancyController {
         List<Vacancy> vacancies = VacancyService.getVacancies();
         if (vacancies == null || vacancies.isEmpty()) {
             VacancyService.updateVacancies();
+            vacancies = VacancyService.getVacancies();
         }
-        vacancies = VacancyService.getVacancies();
         model.addAttribute("list", vacancies);
         return "index";
     }

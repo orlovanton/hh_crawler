@@ -3,6 +3,7 @@ package ru.af.json;
 import com.google.gson.Gson;
 import ru.af.entity.HhResponse;
 import ru.af.entity.HhVacancy;
+import ru.af.formatvacancy.PropertyHolder;
 import ru.af.formatvacancy.Vacancy;
 
 import java.util.ArrayList;
@@ -71,6 +72,8 @@ public class VacancyUtil {
             }
             shortVacancy.setVacancyName(v.getName());
             shortVacancy.setId(String.valueOf(v.getId()));
+            String baseUrl = PropertyHolder.getInstance().BASE_URL;
+            shortVacancy.setUrl(baseUrl + v.getId());
             vacancies.add(shortVacancy);
         }
 

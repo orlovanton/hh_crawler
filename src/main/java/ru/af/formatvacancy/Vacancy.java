@@ -8,17 +8,19 @@ public class Vacancy {
     private String vacancyExperience;
     private String vacancySalary;
     private String vacancyName;
+    private String url;
     private String id;
 
     public Vacancy() {
     }
 
     public Vacancy(String id, String vacancyName, String vacancySalary,
-                   String vacancyExperience, String vacancyArea) {
+                   String vacancyExperience, String vacancyArea, String url) {
         this.vacancyArea = vacancyArea;
         this.vacancyExperience = vacancyExperience;
         this.vacancySalary = vacancySalary;
         this.vacancyName = vacancyName;
+        this.url = url;
         this.id = id;
     }
 
@@ -54,6 +56,14 @@ public class Vacancy {
         this.vacancyName = vacancyName;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public String getId() {
         return id;
     }
@@ -84,6 +94,7 @@ public class Vacancy {
                 ", vacancyExperience='" + vacancyExperience + '\'' +
                 ", vacancySalary='" + vacancySalary + '\'' +
                 ", vacancyName='" + vacancyName + '\'' +
+                ", url='" + url + '\'' +
                 ", id='" + id + '\'' +
                 '}';
     }

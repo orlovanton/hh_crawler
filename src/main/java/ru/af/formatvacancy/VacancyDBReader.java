@@ -34,7 +34,8 @@ public class VacancyDBReader extends DBConnection implements VacancyReaderInt {
                         rs.getString("vacancyName"),
                         rs.getString("vacancySalary"),
                         rs.getString("vacancyExperience"),
-                        rs.getString("vacancyArea")
+                        rs.getString("vacancyArea"),
+                        rs.getString("url")
                 );
                 listOfVacancies.add(vacancy);
             }

@@ -13,8 +13,8 @@ import java.util.Collection;
 public class VacancyDBWriter extends DBConnection implements VacancyWriterInt {
 
     private final String INSERT = "insert into vacancy " +
-            "(id, vacancyname, vacancysalary, vacancyexperience, vacancyarea) " +
-            "values (?, ?, ?,?,?);";
+            "(id, vacancyname, vacancysalary, vacancyexperience, vacancyarea, url) " +
+            "values (?, ?, ?,?,?,?);";
     private final String DELETE = "delete from vacancy where id = ?";
     private final String UPDATE =
             "update vacancy SET " +
@@ -44,6 +44,7 @@ public class VacancyDBWriter extends DBConnection implements VacancyWriterInt {
                 ps.setString(3, vacancy.getVacancySalary());
                 ps.setString(4, vacancy.getVacancyExperience());
                 ps.setString(5, vacancy.getVacancyArea());
+                ps.setString(6, vacancy.getUrl());
                 ps.executeUpdate();
             }
             ps.close();

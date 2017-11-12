@@ -8,5 +8,6 @@ create table vacancy (
   vacancysalary varchar(32) not null,
   vacancyexperience varchar(32) not null,
   vacancyarea varchar(32) not null,
+   url varchar(100) not null,
   primary key (id)
 );

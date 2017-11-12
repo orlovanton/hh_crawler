@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import ru.af.entity.HhResponse;
 import ru.af.entity.HhVacancy;
 import ru.af.formatvacancy.Vacancy;
-import ru.af.formatvacancy.VacancyTxtReader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ public class VacancyUtil {
      *
      * @return список вакансий
      */
-    public static List<HhVacancy> convertToVacancies(String json) {
+    private static List<HhVacancy> convertToVacancies(String json) {
         Gson gson = new Gson();
         HhResponse hhResponse = gson.fromJson(json, HhResponse.class);
         return hhResponse.getItems();
@@ -31,8 +30,8 @@ public class VacancyUtil {
      * @param query поисковой запрос
      * @return кол-во вакансий
      */
-    protected static int getTotalPages(final String query) {
-        final String json = RequestUtil.getVacancies(query);
+    private static int getTotalPages(final String query) {
+        final String json = RequestUtil.getVacancies(0, query);
 
         Gson gson = new Gson();
         HhResponse hhResponse = gson.fromJson(json, HhResponse.class);
@@ -56,11 +55,8 @@ public class VacancyUtil {
             } else {
                 shortVacancy.setVacancyArea("Город вакансии не указан");
             }
-            if (v.getExperience() != null) {
-                shortVacancy.setVacancyExperience(v.getExperience().getName());
-            } else {
-                shortVacancy.setVacancyExperience("опыт вакансии не указан");
-            }
+            shortVacancy.setVacancyExperience("Нет опыта");
+            //fixme: остальные варианты опыта
             if (v.getSalary() != null) {
                 String salary = "";
                 if (v.getSalary().getFrom() != 0) {
@@ -77,6 +73,32 @@ public class VacancyUtil {
             shortVacancy.setId(String.valueOf(v.getId()));
             vacancies.add(shortVacancy);
         }
+
         return vacancies;
+    }
+
+
+    /**
+     * Получить список вакансий из API HH
+     *
+     * @param number максимальное кол-во вакансий
+     * @param query  поисковое слово, например java
+     * @return список вакансий
+     */
+    public static List<Vacancy> downloadVacancies(int number, String query) {
+        int totalPages = VacancyUtil.getTotalPages(query);
+        int counter = 0;
+        final List<HhVacancy> result = new ArrayList<>(number);
+
+        for (int i = 0; i < totalPages; i++) {
+            if (counter >= number) {
+                return VacancyUtil.convert(result);
+            }
+            String vacanciesJson = RequestUtil.getVacancies(i, query);
+            List<HhVacancy> vacancies = VacancyUtil.convertToVacancies(vacanciesJson);
+            result.addAll(vacancies);
+            counter += vacancies.size();
+        }
+        return VacancyUtil.convert(result);
     }
 }

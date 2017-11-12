@@ -13,8 +13,8 @@ public class Vacancy {
     public Vacancy() {
     }
 
-    public Vacancy(String vacancyArea, String vacancyExperience,
-                   String vacancySalary, String vacancyName, String id) {
+    public Vacancy(String id, String vacancyName, String vacancySalary,
+                   String vacancyExperience, String vacancyArea) {
         this.vacancyArea = vacancyArea;
         this.vacancyExperience = vacancyExperience;
         this.vacancySalary = vacancySalary;

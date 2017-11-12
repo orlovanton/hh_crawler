@@ -5,6 +5,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import ru.af.formatvacancy.PropertyHolder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,36 +32,6 @@ class RequestUtil {
     //это код СПб в API HH
     private static final String SPB_CODE = "2";
 
-    //fixme: нахер это вообще надо ?!
-//    /**
-//     * Получить вакансии из API HH
-//     * @param id идентификаор вакансии
-//     * @return вакансию в формате json
-//     */
-//    public static String getVacancy(final String id) {
-//        try {
-//            URI uri = new URIBuilder()
-//                    .setScheme("https")
-//                    .setHost("api.hh.ru")
-//                    .setPath(VACANCIES_PATH + "/" + id)
-//                    .build();
-//            HttpGet getRequest = new HttpGet(uri);
-//
-//            return getJson(getRequest);
-//        } catch (URISyntaxException ex) {
-//            ex.printStackTrace();
-//        }
-//        return null;
-//    }
-
-    /**
-     *
-     * @param query
-     * @return
-     */
-    public static String getVacancies(final String query) {
-        return getVacancies(0, query);
-    }
 
     /**
      * Получиь json с вакансиями
@@ -70,7 +41,7 @@ class RequestUtil {
      * @return переведенная в строку из json вакакнсия
      */
 
-    protected static String getVacancies(int page, final String query) {
+    static String getVacancies(int page, final String query) {
         try {
             URI uri = new URIBuilder()
                     .setScheme("https")
@@ -79,6 +50,7 @@ class RequestUtil {
                     .setParameter(TEXT_PARAM, query)
                     .setParameter(PAGE_PARAM, page + "")
                     .setParameter(AREA_PARAM, SPB_CODE)
+                    .setParameter(EXPERIENCE_PARAM, PropertyHolder.getInstance().EXPIRIENCE)
                     .build();
             HttpGet getRequest = new HttpGet(uri);
             getRequest.addHeader("accept", "application/json");
@@ -94,7 +66,7 @@ class RequestUtil {
      * Получить json запрошенного через getRequest
      *
      * @param getRequest get-запрос для полукчение вакансии в формате json
-     * @return
+     * @return конвертированный json в объект string
      */
     private static String getJson(HttpGet getRequest) {
         HttpClientBuilder builder = HttpClientBuilder.create();

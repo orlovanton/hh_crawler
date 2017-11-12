@@ -15,6 +15,7 @@ public class PropertyHolder {
     public final String USER;
     public final String PASSWORD;
     public final String MODE;
+    public final String EXPIRIENCE;
     private static PropertyHolder instance;
 
     private PropertyHolder() {
@@ -25,6 +26,7 @@ public class PropertyHolder {
         USER = properties.getProperty("user");
         PASSWORD = properties.getProperty("password");
         MODE = properties.getProperty("hh.mode");
+        EXPIRIENCE= properties.getProperty("experience");
     }
 
     /**

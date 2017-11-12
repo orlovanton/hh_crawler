@@ -17,8 +17,6 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <!--<li class="active"><a href="#">Home</a></li>-->
-                <!--<li><a href="#about">About</a></li>-->
             </ul>
         </div>
     </div>
@@ -27,9 +25,8 @@
 <div class="container">
     <div class="starter-template">
         <div class="text-center">
-            <div th:replace="pagination"/>
+            <a th:href="@{/update}" class="btn btn-primary">Обновить</a>
         </div>
-
         <h1>Вакансии</h1>
         <h1 th:text="${url}"></h1>
         <table class="table">
@@ -38,22 +35,19 @@
             <th>Город</th>
             <th>Оплата</th>
             <th>Опыт работы</th>
+            <th>Ссылка</th>
             </thead>
-            <tr th:each="vacancies : ${list}">
-
-                <td th:text="${vacancies.vacancyName}"></td>
-                <td th:text="${vacancies.vacancyArea}"></td>
-                <td th:text="${vacancies.vacancySalary}"></td>
-                <td th:text="${vacancies.vacancyExperience}"></td>
+            <tr th:each="vacancy : ${list}">
+                <td th:text="${vacancy.vacancyName}"></td>
+                <td th:text="${vacancy.vacancyArea}"></td>
+                <td th:text="${vacancy.vacancySalary}"></td>
+                <td th:text="${vacancy.vacancyExperience}"></td>
+                <td> <a th:href="@{${vacancy.url}}" target="_blank">Ссылка</a></td>
             </tr>
         </table>
-        <div class="text-center">
-            <div th:replace="pagination"/>
-        </div>
     </div>
 
 </div>
-<!-- /.container -->
 
 <script type="text/javascript"
         src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

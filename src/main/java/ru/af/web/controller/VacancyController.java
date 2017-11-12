@@ -2,7 +2,6 @@ package ru.af.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.af.formatvacancy.Vacancy;
 import ru.af.json.VacancyService;
@@ -15,17 +14,14 @@ import java.util.List;
 @Controller
 public class VacancyController {
 
-    @RequestMapping(value = {"/","/index.html"})
-    public String getContests(Model model){
-        return index(model,0);
-    }
-
-    @RequestMapping("/{pageNum}")
-    public String index(Model model, @PathVariable Integer pageNum) {
+    @RequestMapping(value = {"/", "/index.html"})
+    public String getContests(Model model) {
         List<Vacancy> vacancies = VacancyService.getVacancies();
+        if (vacancies == null || vacancies.isEmpty()) {
+            VacancyService.updateVacancies();
+        }
+        vacancies = VacancyService.getVacancies();
         model.addAttribute("list", vacancies);
-        model.addAttribute("totalPages", 8);
-        model.addAttribute("currentPage", pageNum);
         return "index";
     }
 

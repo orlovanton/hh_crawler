@@ -91,7 +91,13 @@ public class VacancyService {
      * @return список вакансий из txt файла
      */
     public static List<Vacancy> getVacancies() {
-        VacancyTxtReader reader = new VacancyTxtReader();
+        VacancyReaderInt reader;
+        if ("db".equals(PropertyHolder.getInstance().MODE)) {
+            reader = new VacancyDBReader();
+        } else {
+            reader = new VacancyTxtReader();
+        }
+
         return reader.getAllVacancies();
     }
 
